@@ -10,6 +10,7 @@ import UIKit
 final class ListViewController: UIViewController {
     
     private var repositories: [Repository] = []
+    private var searchText = ""
      
     private let emptyView = EmptyView()
     private let loadingView = LoadingView()
@@ -70,9 +71,11 @@ extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegat
     func updateSearchResults(for searchController: UISearchController) {
         guard
             searchController.searchBar.text != "",
+            searchController.searchBar.text != searchText,
             let text = searchController.searchBar.text else { return }
 
         self.view = loadingView
+        self.searchText = text
 
         service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
