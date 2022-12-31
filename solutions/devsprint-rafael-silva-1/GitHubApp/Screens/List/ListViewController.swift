@@ -92,7 +92,7 @@ extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let vc = DetailViewController()
         vc.updateView(with: repositories[indexPath.row])
-        present(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }

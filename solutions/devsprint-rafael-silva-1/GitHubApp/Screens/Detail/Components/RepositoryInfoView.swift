@@ -20,6 +20,7 @@ class RepositoryInfoView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .label
         return label
     }()
     
@@ -27,6 +28,7 @@ class RepositoryInfoView: UIView {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.textColor = .label
         return label
     }()
     

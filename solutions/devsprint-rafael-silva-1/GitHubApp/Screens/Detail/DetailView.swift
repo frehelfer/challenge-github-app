@@ -7,7 +7,14 @@
 
 import UIKit
 
+struct DetailViewConfiguration {
+    let repository: Repository
+}
+
 class DetailView: UIView {
+    
+    private var repository: Repository?
+    private var ownerImage: UIImage?
     
     lazy var repositoryInfoView: RepositoryInfoView = {
         let view = RepositoryInfoView()
@@ -43,9 +50,11 @@ extension DetailView {
     
     func configureSubviews() {
         addSubview(repositoryInfoView)
+        addSubview(ownerView)
     }
     
     func configureSubviewsConstraints() {
+        
         NSLayoutConstraint.activate([
         
             repositoryInfoView.leadingAnchor.constraint(equalTo: leadingAnchor),
@@ -57,5 +66,18 @@ extension DetailView {
             ownerView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
         ])
+    }
+}
+
+extension DetailView {
+    
+    public func setupView(repository: Repository) {
+        self.repositoryInfoView.updateView(with: RepositoryInfoViewConfiguration(repoTitle: repository.name ?? "", repoDescription: repository.description ?? "", stars: repository.stargazersCount ?? 0, forks: repository.forksCount ?? 0))
+        
+        self.ownerView.updateView(with: OwnerViewConfiguration(ownerTitle: "Owner", ownerName: repository.owner?.login ?? "", ownerBio: repository.owner?.type ?? "", ownerImage: ownerImage ?? UIImage()))
+    }
+    
+    public func setupViewImage(ownerImage: UIImage) {
+        self.ownerImage = ownerImage
     }
 }
