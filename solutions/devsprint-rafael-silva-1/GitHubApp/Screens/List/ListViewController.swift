@@ -8,19 +8,15 @@
 import UIKit
 
 final class ListViewController: UIViewController {
+    
+    private var repositories: [Repository] = []
      
     private let emptyView = EmptyView()
     private let loadingView = LoadingView()
+    private let listView = ListView()
     
-    private var userName: String = "devpass-tech"
     private let service = Service()
 
-    private let listView: ListView = {
-
-        let listView = ListView()
-        return listView
-    }()
-    
     private lazy var searchController: UISearchController = {
         let controller = UISearchController()
         controller.searchBar.placeholder = "Type a GitHub user name"
@@ -52,28 +48,20 @@ final class ListViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    override func loadView() {
+        self.view = emptyView
+    }
 
     override func viewDidLoad() {
+        
+        listView.configureTableViewDelegate(delegate: self)
 
         self.view.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
         self.navigationItem.title = "Repositories"
         self.navigationItem.searchController = searchController
         self.navigationItem.rightBarButtonItem = settingsButton
-    }
-
-    override func viewDidAppear(_ animated: Bool) {
-        
-
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        
-        
-    }
-
-    override func loadView() {
-        self.view = emptyView
     }
 }
 
@@ -88,14 +76,23 @@ extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegat
         service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if let repositories {
+                    self?.repositories = repositories
                     self?.listView.updateView(with: repositories)
                     self?.view = self?.listView
-                    
                 } else {
                     self?.view = self?.emptyView
                 }
-                
             }
         }
     }
+}
+
+extension ListViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailViewController()
+        vc.updateView(with: repositories[indexPath.row])
+        present(vc, animated: true)
+    }
+    
 }

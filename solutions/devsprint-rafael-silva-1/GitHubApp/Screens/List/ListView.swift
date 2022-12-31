@@ -19,7 +19,6 @@ final class ListView: UIView {
     private var listItems: [Repository] = []
 
     private lazy var tableView: UITableView = {
-
         let tableView = UITableView(frame: .zero)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(RepositoryCellView.self, forCellReuseIdentifier: RepositoryCellView.identifier)
@@ -66,11 +65,17 @@ private extension ListView {
 
 extension ListView {
 
-    func updateView(with repositories: [Repository]) {
+    public func updateView(with repositories: [Repository]) {
 
         self.listItems = repositories
         self.tableView.reloadData()
+        
     }
+    
+    public func configureTableViewDelegate(delegate: UITableViewDelegate) {
+        self.tableView.delegate = delegate
+    }
+    
 }
 
 extension ListView: UITableViewDataSource {

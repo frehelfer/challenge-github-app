@@ -8,8 +8,18 @@
 import UIKit
 
 class DetailViewController: UIViewController {
+    
+    private var repository: Repository?
 
     override func loadView() {
         self.view = DetailView()
     }
+}
+
+extension DetailViewController {
+    
+    public func updateView(with repository: Repository) {
+        self.repository = repository
+    }
+    
 }
