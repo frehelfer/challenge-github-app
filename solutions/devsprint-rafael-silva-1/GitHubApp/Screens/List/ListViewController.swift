@@ -59,6 +59,7 @@ final class ListViewController: UIViewController {
 
         self.view.backgroundColor = .systemBackground
         self.navigationController?.navigationBar.prefersLargeTitles = true
+//        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 0.94)
         self.navigationItem.title = "Repositories"
         self.navigationItem.searchController = searchController
         self.navigationItem.rightBarButtonItem = settingsButton

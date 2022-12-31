@@ -50,7 +50,7 @@ class OwnerView: UIView {
     lazy var button: UIView = {
         let button = ButtonView()
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.updateView(with: ButtonView.ButtonViewConfiguration(buttonTitle: "See Profile"))
+        button.updateView(with: ButtonViewConfiguration(buttonTitle: "See Profile"))
         return button
     }()
 
@@ -77,8 +77,8 @@ private extension OwnerView {
         addSubview(ownerTitle)
         addSubview(ownerName)
         addSubview(ownerBio)
-        addSubview(ownerImage)
         addSubview(button)
+        addSubview(ownerImage)
     }
     
     func configureSubviewsConstraints() {
@@ -100,10 +100,9 @@ private extension OwnerView {
             button.trailingAnchor.constraint(equalTo: ownerTitle.trailingAnchor),
             button.topAnchor.constraint(equalTo: ownerBio.bottomAnchor, constant: 21),
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 23.5),
-            button.heightAnchor.constraint(equalToConstant: 56),
             
             ownerImage.bottomAnchor.constraint(equalTo: button.topAnchor, constant: 22),
-            ownerBio.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
+            ownerImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             ownerImage.heightAnchor.constraint(equalToConstant: 45),
             ownerImage.widthAnchor.constraint(equalToConstant: 45),
             

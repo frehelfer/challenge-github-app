@@ -16,6 +16,30 @@ class DetailView: UIView {
     private var repository: Repository?
     private var ownerImage: UIImage?
     
+    lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    lazy var stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.backgroundColor = .green
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.distribution = .fillEqually
+        stack.alignment = .fill
+        stack.spacing = 14
+        return stack
+    }()
+    
+    lazy var divider: UIView = {
+        let divider = UIView()
+        divider.translatesAutoresizingMaskIntoConstraints = false
+        divider.backgroundColor = .lightGray
+        return divider
+    }()
+    
     lazy var repositoryInfoView: RepositoryInfoView = {
         let view = RepositoryInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -49,22 +73,25 @@ extension DetailView {
     }
     
     func configureSubviews() {
-        addSubview(repositoryInfoView)
-        addSubview(ownerView)
+        addSubview(scrollView)
+        scrollView.addSubview(stackView)
+        
+        stackView.addArrangedSubview(repositoryInfoView)
+        stackView.addArrangedSubview(ownerView)
     }
     
     func configureSubviewsConstraints() {
         
         NSLayoutConstraint.activate([
-        
-            repositoryInfoView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            repositoryInfoView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-            repositoryInfoView.trailingAnchor.constraint(equalTo: trailingAnchor),
             
-            ownerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            ownerView.topAnchor.constraint(equalTo: repositoryInfoView.bottomAnchor),
-            ownerView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            scrollView.topAnchor.constraint(equalTo: topAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
         ])
     }
 }

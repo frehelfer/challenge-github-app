@@ -29,6 +29,7 @@ class RepositoryInfoView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
         label.textColor = .label
+        label.numberOfLines = 0
         return label
     }()
     
