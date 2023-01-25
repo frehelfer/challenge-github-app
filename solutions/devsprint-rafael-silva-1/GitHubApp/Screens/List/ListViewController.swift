@@ -51,7 +51,7 @@ final class ListViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = emptyView
+        self.view = StartView()
     }
 
     override func viewDidLoad() {

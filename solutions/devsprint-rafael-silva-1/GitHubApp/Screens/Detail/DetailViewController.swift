@@ -12,6 +12,8 @@ class DetailViewController: UIViewController {
     private var repository: Repository?
     
     private let detailView = DetailView()
+    
+    private let service = Service()
 
     override func loadView() {
         self.view = detailView
@@ -23,6 +25,20 @@ class DetailViewController: UIViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func viewDidLoad() {
+        
+        service.fetchUserImage(urlString: repository?.owner?.avatarUrl ?? "") { [weak self] image, error in
+            DispatchQueue.main.async {
+                if let image {
+                    self?.detailView.setupViewImage(ownerImage: image)
+                } else {
+                    
+                }
+            }
+        }
+        
     }
     
 }

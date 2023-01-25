@@ -105,6 +105,6 @@ extension DetailView {
     }
     
     public func setupViewImage(ownerImage: UIImage) {
-        self.ownerImage = ownerImage
+        self.ownerView.updateImage(image: ownerImage)
     }
 }

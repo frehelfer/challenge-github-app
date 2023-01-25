@@ -25,7 +25,7 @@ struct Repository: Codable {
 struct Owner: Codable {
     let login: String?
     let id: Int?
-    let avatarURL: String?
+    let avatarUrl: String?
     let url, htmlURL: String?
     let type: String?
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 struct Service {
 
@@ -32,6 +33,26 @@ struct Service {
             
             guard let repositories = try? decoder.decode([Repository].self, from: data) else { return }
             completionHandler(repositories, nil)
+        }
+        .resume()
+    }
+    
+    func fetchUserImage(urlString: String, completionHandler: @escaping (_ image: UIImage?, _ error: Error?) -> ()) {
+        guard
+            urlString != "",
+            let url = URL(string: urlString) else { return }
+        
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            guard
+                let data = data,
+                let image = UIImage(data: data),
+                let response = response as? HTTPURLResponse,
+                200...299 ~= response.statusCode else {
+                completionHandler(nil, error)
+                return
+            }
+            
+            completionHandler(image, nil)
         }
         .resume()
     }

@@ -43,7 +43,6 @@ class OwnerView: UIView {
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
         image.layer.cornerRadius = 25
-        image.image = UIImage(systemName: "person.fill")
         return image
     }()
     
@@ -101,7 +100,7 @@ private extension OwnerView {
             button.topAnchor.constraint(equalTo: ownerBio.bottomAnchor, constant: 21),
             button.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 23.5),
             
-            ownerImage.bottomAnchor.constraint(equalTo: button.topAnchor, constant: 22),
+            ownerImage.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -22),
             ownerImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
             ownerImage.heightAnchor.constraint(equalToConstant: 45),
             ownerImage.widthAnchor.constraint(equalToConstant: 45),
@@ -116,7 +115,10 @@ extension OwnerView {
         self.ownerTitle.text = configuration.ownerTitle
         self.ownerName.text = configuration.ownerName
         self.ownerBio.text = configuration.ownerBio
-        self.ownerImage.image = configuration.ownerImage
+    }
+    
+    public func updateImage(image: UIImage) {
+        self.ownerImage.image = image
     }
     
 }
