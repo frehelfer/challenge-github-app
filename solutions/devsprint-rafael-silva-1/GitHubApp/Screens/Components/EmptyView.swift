@@ -1,68 +1,74 @@
+//
+//  EmptyView.swift
+//  GitHubApp
+//
+//  Created by Frédéric Helfer on 25/01/23.
+//
+
 import UIKit
 
 class EmptyView: UIView {
-    struct EmptyViewConfiguration {
-        let noRepositoriesLabel: String
-        let searchForUsersLabel: String
-    }
     
-    let noRepositoriesLabel: UILabel = {
+    private lazy var stackView: UIStackView = {
+        let stack = UIStackView()
+        stack.translatesAutoresizingMaskIntoConstraints = false
+        stack.axis = .vertical
+        stack.distribution = .fillEqually
+        stack.alignment = .center
+        stack.spacing = 14
+        return stack
+    }()
+    
+    private lazy var noRepositoriesLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "No repositories found"
+        label.text = "No repositories found 😢"
         label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = .label
         return label
     }()
     
-    let searchForUsersLabel: UILabel = {
+    private lazy var searchForUsersLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Search for users to see their public repositories here!"
+        label.text = "Try another user name."
         label.font = .systemFont(ofSize: 13, weight: .regular)
-        label.textColor = UIColor(red: 142, green: 142, blue: 147)
+        label.textColor = .secondaryLabel
         return label
     }()
     
-    let stackView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.alignment = .center
-        stackView.distribution = .fillEqually
-        stackView.spacing = 15
-        return stackView
-    }()
+    // MARK: - Init
     
-    init() {
-        super.init(frame: .zero)
-        setupView()
-        constraints()
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
+
+private extension EmptyView {
     
-    func setupView() {
+    func setupViews() {
+        backgroundColor = .systemBackground
         
+        configureSubviews()
+        configureSubviewsConstraints()
+    }
+
+    func configureSubviews() {
         addSubview(stackView)
         stackView.addArrangedSubview(noRepositoriesLabel)
         stackView.addArrangedSubview(searchForUsersLabel)
     }
-    
-    func constraints() {
-        
+
+    func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 46),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -46)
         ])
     }
-    
-    func updateView(with configuration: EmptyViewConfiguration){
-        noRepositoriesLabel.text = configuration.noRepositoriesLabel
-        searchForUsersLabel.text = configuration.searchForUsersLabel
-    }
 }
-
 

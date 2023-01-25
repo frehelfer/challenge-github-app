@@ -7,13 +7,9 @@
 
 import UIKit
 
-struct LoadingViewConfiguration {
-    let loadingLabelText = "Searching repositories..."
-}
-
 class LoadingView: UIView {
     
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView()
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
@@ -23,7 +19,7 @@ class LoadingView: UIView {
         return stack
     }()
     
-    lazy var loadingLabel: UILabel = {
+    private lazy var loadingLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Searching repositories..."
@@ -31,17 +27,19 @@ class LoadingView: UIView {
         return label
     }()
     
-    lazy var loadingIndicatorView: UIActivityIndicatorView = {
+    private lazy var loadingIndicatorView: UIActivityIndicatorView = {
         let spinner = UIActivityIndicatorView()
         spinner.translatesAutoresizingMaskIntoConstraints = false
         spinner.style = .large
         spinner.startAnimating()
         return spinner
     }()
+    
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.setupViews()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -66,17 +64,8 @@ private extension LoadingView {
 
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
-
             stackView.centerXAnchor.constraint(equalTo: centerXAnchor),
             stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
         ])
-    }
-}
-
-extension LoadingView {
-
-    func updateView(with configuration: LoadingViewConfiguration) {
-        loadingLabel.text = configuration.loadingLabelText
     }
 }

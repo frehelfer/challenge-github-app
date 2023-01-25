@@ -1,3 +1,10 @@
+//
+//  ButtonView.swift
+//  GitHubApp
+//
+//  Created by Frédéric Helfer on 25/01/23.
+//
+
 import UIKit
 
 struct ButtonViewConfiguration {
@@ -6,13 +13,15 @@ struct ButtonViewConfiguration {
 
 class ButtonView: UIView {
     
-    lazy var button: UIButton = {
+    private lazy var button: UIButton = {
         let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.layer.cornerRadius = 14
         button.backgroundColor = UIColor(red: 0, green: 0.478, blue: 1, alpha: 1)
         return button
     }()
+    
+    // MARK: - Init
     
     init () {
         super.init(frame: .zero)
@@ -22,11 +31,10 @@ class ButtonView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
 }
 
 private extension ButtonView {
-    
+
     func setupViews() {
         self.configureSubviews()
         self.configureSubviewsConstraints()
@@ -38,19 +46,16 @@ private extension ButtonView {
 
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
-
             button.leadingAnchor.constraint(equalTo: leadingAnchor),
             button.trailingAnchor.constraint(equalTo: trailingAnchor),
             button.heightAnchor.constraint(equalToConstant: 56),
-            
         ])
     }
-    
 }
 
 extension ButtonView {
     
-    public func updateView (with configuration: ButtonViewConfiguration) {
+    public func updateView(with configuration: ButtonViewConfiguration) {
         button.setTitle(configuration.buttonTitle, for: .normal)
     }
     
