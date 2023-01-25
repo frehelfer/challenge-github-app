@@ -25,12 +25,12 @@ final class ListView: UIView {
         tableView.dataSource = self
         return tableView
     }()
+    
+    // MARK: - Init
 
     init() {
-
         super.init(frame: .zero)
-
-        self.setupViews()
+        setupViews()
     }
 
     required init?(coder: NSCoder) {
@@ -41,57 +41,53 @@ final class ListView: UIView {
 private extension ListView {
 
     func setupViews() {
-
-        self.configureSubviews()
-        self.configureSubviewsConstraints()
+        backgroundColor = .systemBackground
+        configureSubviews()
+        configureSubviewsConstraints()
     }
 
     func configureSubviews() {
-
-        self.addSubview(self.tableView)
+        addSubview(tableView)
     }
 
     func configureSubviewsConstraints() {
-
         NSLayoutConstraint.activate([
-
-            self.tableView.leadingAnchor.constraint(equalTo: self.leadingAnchor),
-            self.tableView.trailingAnchor.constraint(equalTo: self.trailingAnchor),
-            self.tableView.topAnchor.constraint(equalTo: self.topAnchor),
-            self.tableView.bottomAnchor.constraint(equalTo: self.bottomAnchor)
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
 }
 
+// MARK: - Public func
+
 extension ListView {
 
     public func updateView(with repositories: [Repository]) {
-
-        self.listItems = repositories
-        self.tableView.reloadData()
-        
+        listItems = repositories
+        tableView.reloadData()
     }
     
     public func configureTableViewDelegate(delegate: UITableViewDelegate) {
-        self.tableView.delegate = delegate
+        tableView.delegate = delegate
     }
     
 }
 
+// MARK: - TableView Config
+
 extension ListView: UITableViewDataSource {
 
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-
-        return self.listItems.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return listItems.count
     }
 
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: RepositoryCellView.identifier, for: indexPath) as? RepositoryCellView else {
-            fatalError("Error creating RepositoryCellView")
+            fatalError("Unsupported")
         }
         cell.updateView(with: listItems[indexPath.row])
         return cell
     }
 }
-

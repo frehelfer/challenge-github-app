@@ -16,21 +16,21 @@ class SettingsView: UIView {
         return tableView
     }()
     
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
 }
 
 private extension SettingsView {
     func setupView() {
-        backgroundColor = .white
+        backgroundColor = .systemBackground
         configureSubviews()
         configureSubviewsConstraints()
     }
@@ -41,15 +41,15 @@ private extension SettingsView {
     
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
-            
             tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
             tableView.topAnchor.constraint(equalTo: topAnchor),
             tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            
         ])
     }
 }
+
+// MARK: - TableView Config
 
 extension SettingsView: UITableViewDataSource {
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {

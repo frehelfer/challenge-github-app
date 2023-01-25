@@ -24,6 +24,7 @@ class LoadingView: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Searching repositories..."
         label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
+        label.textColor = .label
         return label
     }()
     

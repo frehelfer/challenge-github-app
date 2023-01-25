@@ -41,9 +41,10 @@ final class ListViewController: UIViewController {
         present(UINavigationController(rootViewController: vc), animated: true)
     }
     
+    // MARK: - Init
+    
     init() {
         super.init(nibName: nil, bundle: nil)
-
     }
 
     required init?(coder: NSCoder) {
@@ -51,33 +52,33 @@ final class ListViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = StartView()
-    }
-
-    override func viewDidLoad() {
+        view = StartView()
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.barTintColor = .secondarySystemBackground
+        navigationItem.title = "Repositories"
+        navigationItem.searchController = searchController
+        navigationItem.rightBarButtonItem = settingsButton
         
         listView.configureTableViewDelegate(delegate: self)
-
-        self.view.backgroundColor = .systemBackground
-        self.navigationController?.navigationBar.prefersLargeTitles = true
-//        self.navigationController?.navigationBar.barTintColor = UIColor(red: 0.98, green: 0.98, blue: 0.98, alpha: 0.94)
-        self.navigationItem.title = "Repositories"
-        self.navigationItem.searchController = searchController
-        self.navigationItem.rightBarButtonItem = settingsButton
     }
+
 }
+
+// MARK: - SearchController config
 
 extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
     func updateSearchResults(for searchController: UISearchController) {
         guard
             searchController.searchBar.text != "",
             searchController.searchBar.text != searchText,
-            let text = searchController.searchBar.text else { return }
+            let text = searchController.searchBar.text
+        else { return }
 
         self.view = loadingView
         self.searchText = text
+        
+        self.service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
 
-        service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 if let repositories {
                     self?.repositories = repositories
@@ -90,6 +91,8 @@ extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegat
         }
     }
 }
+
+// MARK: - TableView config
 
 extension ListViewController: UITableViewDelegate {
     

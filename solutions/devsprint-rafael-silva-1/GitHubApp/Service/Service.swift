@@ -9,16 +9,12 @@ import Foundation
 import UIKit
 
 struct Service {
-
-    func fetchList(_ completion: ([String]) -> Void) {
-
-        completion(["Repository 1", "Repository 2", "Repository 3"])
-    }
     
     func fetchUserRepositories(userName: String, completionHandler: @escaping (_ repositories: [Repository]?, _ error: Error?) -> ()) {
         guard let url = URL(string: "https://api.github.com/users/\(userName)/repos") else { return }
         
         URLSession.shared.dataTask(with: url) { (data, response, error) in
+            print("searching: \(userName)")
             guard
                 error == nil,
                 let data = data,

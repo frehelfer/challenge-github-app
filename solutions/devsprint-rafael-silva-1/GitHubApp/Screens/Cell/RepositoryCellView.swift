@@ -11,7 +11,7 @@ class RepositoryCellView: UITableViewCell {
     
     static let identifier = "RepositoryCellView"
     
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.axis = .vertical
@@ -21,35 +21,36 @@ class RepositoryCellView: UITableViewCell {
         return view
     }()
     
-    lazy var repositoryName: UILabel = {
+    private lazy var repositoryName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .semibold)
+        label.textColor = .label
         return label
     }()
     
-    lazy var repositoryUserName: UILabel = {
+    private lazy var repositoryUserName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 13)
-        label.textColor = .gray
+        label.textColor = .secondaryLabel
         return label
     }()
     
-    lazy var chevron: UIImageView = {
+    private lazy var chevron: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.image = UIImage(systemName: "chevron.forward")
-        image.tintColor = .gray
+        image.tintColor = .secondaryLabel
         return image
     }()
     
     
-    // MARK: Initialization
+    // MARK: - Init
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        addElements()
+        setupViews()
     }
     
     required init?(coder: NSCoder) {
@@ -59,7 +60,8 @@ class RepositoryCellView: UITableViewCell {
     
     // MARK: addElements
     
-    private func addElements() {
+    private func setupViews() {
+        contentView.backgroundColor = .systemBackground
         addSubview(chevron)
         addSubview(stackView)
         stackView.addArrangedSubview(repositoryName)
@@ -79,13 +81,15 @@ class RepositoryCellView: UITableViewCell {
             
         ])
     }
-    
-    
-    // MARK: Public func
-    
+}
+
+// MARK: - Public func
+
+extension RepositoryCellView {
+   
     public func updateView(with configuration: Repository) {
         repositoryName.text = configuration.name
         repositoryUserName.text = configuration.owner?.login
     }
-
+    
 }
