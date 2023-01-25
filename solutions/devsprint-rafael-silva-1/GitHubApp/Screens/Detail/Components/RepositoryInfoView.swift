@@ -16,7 +16,7 @@ struct RepositoryInfoViewConfiguration {
 
 class RepositoryInfoView: UIView {
     
-    lazy var repoTitle: UILabel = {
+    private lazy var repoTitle: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
@@ -24,7 +24,7 @@ class RepositoryInfoView: UIView {
         return label
     }()
     
-    lazy var repoDescription: UILabel = {
+    private lazy var repoDescription: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
@@ -33,13 +33,15 @@ class RepositoryInfoView: UIView {
         return label
     }()
     
-    lazy var starsAndForks: UILabel = {
+    private lazy var starsAndForks: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         return label
     }()
+    
+    // MARK: - Init
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -80,8 +82,7 @@ private extension RepositoryInfoView {
             starsAndForks.leadingAnchor.constraint(equalTo: repoTitle.leadingAnchor),
             starsAndForks.trailingAnchor.constraint(equalTo: repoTitle.trailingAnchor),
             starsAndForks.topAnchor.constraint(equalTo: repoDescription.bottomAnchor, constant: 13),
-            starsAndForks.bottomAnchor.constraint(equalTo: bottomAnchor, constant: 18.5)
-            
+            starsAndForks.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -18.5)
         ])
     }
 }

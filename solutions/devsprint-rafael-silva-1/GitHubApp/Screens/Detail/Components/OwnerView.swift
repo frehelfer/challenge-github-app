@@ -16,43 +16,48 @@ struct OwnerViewConfiguration {
 
 class OwnerView: UIView {
     
-    lazy var ownerTitle: UILabel = {
+    private lazy var ownerTitle: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 22, weight: .bold)
+        label.textColor = .label
         return label
     }()
     
-    lazy var ownerName: UILabel = {
+    private lazy var ownerName: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 15, weight: .regular)
+        label.textColor = .label
         return label
     }()
     
-    lazy var ownerBio: UILabel = {
+    private lazy var ownerBio: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.systemFont(ofSize: 12, weight: .regular)
-        label.textColor = .lightGray
+        label.textColor = .secondaryLabel
         return label
     }()
     
-    lazy var ownerImage: UIImageView = {
+    private lazy var ownerImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
-        image.layer.cornerRadius = 25
+        image.layer.cornerRadius = 48/2
+        image.clipsToBounds = true
         return image
     }()
     
-    lazy var button: UIView = {
+    private lazy var button: UIView = {
         let button = ButtonView()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.updateView(with: ButtonViewConfiguration(buttonTitle: "See Profile"))
         return button
     }()
 
+    // MARK: - Init
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupViews()
@@ -102,8 +107,8 @@ private extension OwnerView {
             
             ownerImage.bottomAnchor.constraint(equalTo: button.topAnchor, constant: -22),
             ownerImage.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            ownerImage.heightAnchor.constraint(equalToConstant: 45),
-            ownerImage.widthAnchor.constraint(equalToConstant: 45),
+            ownerImage.heightAnchor.constraint(equalToConstant: 48),
+            ownerImage.widthAnchor.constraint(equalToConstant: 48),
             
         ])
     }

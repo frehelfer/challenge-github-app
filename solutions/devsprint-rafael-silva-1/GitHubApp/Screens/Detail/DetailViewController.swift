@@ -19,6 +19,8 @@ class DetailViewController: UIViewController {
         self.view = detailView
     }
     
+    // MARK: - Init
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
@@ -27,9 +29,11 @@ class DetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    // MARK: - Private func
+    
+    private func downloadImage(repository: Repository) {
         
-        service.fetchUserImage(urlString: repository?.owner?.avatarUrl ?? "") { [weak self] image, error in
+        service.fetchUserImage(urlString: repository.owner?.avatarUrl ?? "") { [weak self] image, error in
             DispatchQueue.main.async {
                 if let image {
                     self?.detailView.setupViewImage(ownerImage: image)
@@ -38,15 +42,17 @@ class DetailViewController: UIViewController {
                 }
             }
         }
-        
     }
     
 }
+
+// MARK: - Public func
 
 extension DetailViewController {
     
     public func updateView(with repository: Repository) {
         detailView.setupView(repository: repository)
+        self.downloadImage(repository: repository)
     }
     
 }

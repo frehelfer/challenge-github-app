@@ -54,7 +54,7 @@ final class ListViewController: UIViewController {
     override func loadView() {
         view = StartView()
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.barTintColor = .secondarySystemBackground
+        navigationController?.navigationBar.barTintColor = .green
         navigationItem.title = "Repositories"
         navigationItem.searchController = searchController
         navigationItem.rightBarButtonItem = settingsButton
@@ -76,7 +76,7 @@ extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegat
 
         self.view = loadingView
         self.searchText = text
-        
+
         self.service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {

@@ -16,15 +16,14 @@ class DetailView: UIView {
     private var repository: Repository?
     private var ownerImage: UIImage?
     
-    lazy var scrollView: UIScrollView = {
+    private lazy var scrollView: UIScrollView = {
         let view = UIScrollView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    lazy var stackView: UIStackView = {
+    private lazy var stackView: UIStackView = {
         let stack = UIStackView()
-        stack.backgroundColor = .green
         stack.translatesAutoresizingMaskIntoConstraints = false
         stack.axis = .vertical
         stack.distribution = .fillEqually
@@ -33,24 +32,19 @@ class DetailView: UIView {
         return stack
     }()
     
-    lazy var divider: UIView = {
-        let divider = UIView()
-        divider.translatesAutoresizingMaskIntoConstraints = false
-        divider.backgroundColor = .lightGray
-        return divider
-    }()
-    
-    lazy var repositoryInfoView: RepositoryInfoView = {
+    private lazy var repositoryInfoView: RepositoryInfoView = {
         let view = RepositoryInfoView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    lazy var ownerView: OwnerView = {
+    private lazy var ownerView: OwnerView = {
         let view = OwnerView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
+    
+    // MARK: - Init
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -63,7 +57,7 @@ class DetailView: UIView {
     
 }
 
-extension DetailView {
+private extension DetailView {
     
     func setupViews() {
         backgroundColor = .systemBackground
@@ -77,13 +71,13 @@ extension DetailView {
         scrollView.addSubview(stackView)
         
         stackView.addArrangedSubview(repositoryInfoView)
+//        stackView.addArrangedSubview(divider)
         stackView.addArrangedSubview(ownerView)
     }
     
     func configureSubviewsConstraints() {
         
         NSLayoutConstraint.activate([
-            
             scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
             scrollView.topAnchor.constraint(equalTo: topAnchor),
@@ -92,9 +86,12 @@ extension DetailView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
+//            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 }
+
+// MARK: - Public func
 
 extension DetailView {
     
