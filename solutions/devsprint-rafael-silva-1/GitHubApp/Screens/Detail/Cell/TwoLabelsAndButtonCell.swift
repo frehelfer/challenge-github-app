@@ -88,7 +88,7 @@ private extension TwoLabelsAndButtonCell {
 
 extension TwoLabelsAndButtonCell {
     
-    public func updateView(with configuration: TwoLabelsAndButtonConfiguration) {
+    public func updateView(with configuration: TwoLabelsAndButtonConfiguration, repository: Repository?) {
         self.firstLabel.text = configuration.firstText
         self.secondLabel.text = configuration.secondText
         self.button.updateView(with: ButtonViewConfiguration(buttonTitle: configuration.buttonText))

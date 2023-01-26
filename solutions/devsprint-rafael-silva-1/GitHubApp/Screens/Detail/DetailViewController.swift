@@ -75,13 +75,13 @@ extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
         } else if indexPath.row == 1 {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: OwnerCell.cellIdentifier, for: indexPath) as! OwnerCell
-            cell.updateView(with: OwnerViewConfiguration(ownerTitle: "Owner", ownerName: repository?.owner?.login ?? "", ownerBio: repository?.owner?.type ?? "", ownerImage: ownerImage ?? UIImage()))
+            cell.updateView(with: OwnerViewConfiguration(ownerTitle: "Owner", ownerName: repository?.owner?.login ?? "", ownerBio: repository?.owner?.type ?? ""), repository: self.repository)
             return cell
             
         } else {
             
             let cell = tableView.dequeueReusableCell(withIdentifier: TwoLabelsAndButtonCell.cellIdentifier, for: indexPath) as! TwoLabelsAndButtonCell
-            cell.updateView(with: TwoLabelsAndButtonConfiguration(firstText: "Languages", secondText: "Main language: \(self.repository?.language ?? "")", buttonText: "See languages"))
+            cell.updateView(with: TwoLabelsAndButtonConfiguration(firstText: "Languages", secondText: "Main language: \(self.repository?.language ?? "")", buttonText: "See languages"), repository: self.repository)
             return cell
             
         }

@@ -11,7 +11,7 @@ struct OwnerViewConfiguration {
     let ownerTitle: String
     let ownerName: String
     let ownerBio: String
-    let ownerImage: UIImage
+//    let imageURL: String
 }
 
 class OwnerCell: UITableViewCell {
@@ -118,10 +118,18 @@ private extension OwnerCell {
 
 extension OwnerCell {
     
-    public func updateView(with configuration: OwnerViewConfiguration) {
+    public func updateView(with configuration: OwnerViewConfiguration, repository: Repository?) {
         self.ownerTitle.text = configuration.ownerTitle
         self.ownerName.text = configuration.ownerName
         self.ownerBio.text = configuration.ownerBio
+        
+        Service().fetchUserImage(urlString: repository?.owner?.avatarUrl ?? "") { [weak self] image, error in
+            guard let image else { return }
+            
+            DispatchQueue.main.async {
+                self?.ownerImage.image = image
+            }
+        }
     }
     
     public func updateImage(image: UIImage) {
