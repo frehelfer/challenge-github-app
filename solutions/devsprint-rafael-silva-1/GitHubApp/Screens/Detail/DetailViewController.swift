@@ -10,6 +10,7 @@ import UIKit
 class DetailViewController: UIViewController {
     
     private var repository: Repository?
+    private var ownerImage: UIImage?
     
     private let detailView = DetailView()
     
@@ -29,17 +30,19 @@ class DetailViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewDidLoad() {
+        detailView.configureTableViewDelegate(delegate: self, dataSource: self)
+    }
+    
     // MARK: - Private func
     
     private func downloadImage(repository: Repository) {
         
         service.fetchUserImage(urlString: repository.owner?.avatarUrl ?? "") { [weak self] image, error in
             DispatchQueue.main.async {
-                if let image {
-                    self?.detailView.setupViewImage(ownerImage: image)
-                } else {
-                    
-                }
+                guard let image else { return }
+                self?.ownerImage = image
+                self?.detailView.reloadView()
             }
         }
     }
@@ -51,8 +54,51 @@ class DetailViewController: UIViewController {
 extension DetailViewController {
     
     public func updateView(with repository: Repository) {
-        detailView.setupView(repository: repository)
+        self.repository = repository
         self.downloadImage(repository: repository)
     }
+    
+}
+
+extension DetailViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: RepositoryInfoCell.cellIdentifier, for: indexPath) as! RepositoryInfoCell
+            cell.updateView(with: RepositoryInfoViewConfiguration(repoTitle: repository?.name ?? "", repoDescription: repository?.description ?? "", stars: repository?.stargazersCount ?? 0, forks: repository?.forksCount ?? 0))
+            return cell
+            
+        } else if indexPath.row == 1 {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: OwnerCell.cellIdentifier, for: indexPath) as! OwnerCell
+            cell.updateView(with: OwnerViewConfiguration(ownerTitle: "Owner", ownerName: repository?.owner?.login ?? "", ownerBio: repository?.owner?.type ?? "", ownerImage: ownerImage ?? UIImage()))
+            return cell
+            
+        } else {
+            
+            let cell = tableView.dequeueReusableCell(withIdentifier: TwoLabelsAndButtonCell.cellIdentifier, for: indexPath) as! TwoLabelsAndButtonCell
+            cell.updateView(with: TwoLabelsAndButtonConfiguration(firstText: "Languages", secondText: "Main language: \(self.repository?.language ?? "")", buttonText: "See languages"))
+            return cell
+            
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row == 0 {
+            return 165.5
+        } else if indexPath.row == 1 {
+            return 204
+        } else {
+            return 178
+        }
+    }
+    
+    
+    
+    
     
 }

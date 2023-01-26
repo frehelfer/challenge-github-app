@@ -13,35 +13,14 @@ struct DetailViewConfiguration {
 
 class DetailView: UIView {
     
-    private var repository: Repository?
-    private var ownerImage: UIImage?
-    
-    private lazy var scrollView: UIScrollView = {
-        let view = UIScrollView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private lazy var stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        stack.axis = .vertical
-        stack.distribution = .fillEqually
-        stack.alignment = .fill
-        stack.spacing = 14
-        return stack
-    }()
-    
-    private lazy var repositoryInfoView: RepositoryInfoView = {
-        let view = RepositoryInfoView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private lazy var ownerView: OwnerView = {
-        let view = OwnerView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private lazy var tableView: UITableView = {
+        let tb = UITableView()
+        tb.allowsSelection = false
+        tb.translatesAutoresizingMaskIntoConstraints = false
+        tb.register(TwoLabelsAndButtonCell.self, forCellReuseIdentifier: TwoLabelsAndButtonCell.cellIdentifier)
+        tb.register(RepositoryInfoCell.self, forCellReuseIdentifier: RepositoryInfoCell.cellIdentifier)
+        tb.register(OwnerCell.self, forCellReuseIdentifier: OwnerCell.cellIdentifier)
+        return tb
     }()
     
     // MARK: - Init
@@ -67,26 +46,17 @@ private extension DetailView {
     }
     
     func configureSubviews() {
-        addSubview(scrollView)
-        scrollView.addSubview(stackView)
-        
-        stackView.addArrangedSubview(repositoryInfoView)
-//        stackView.addArrangedSubview(divider)
-        stackView.addArrangedSubview(ownerView)
+        addSubview(tableView)
     }
     
     func configureSubviewsConstraints() {
         
         NSLayoutConstraint.activate([
-            scrollView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            scrollView.topAnchor.constraint(equalTo: topAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: bottomAnchor),
             
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
-//            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
+            tableView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            tableView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            tableView.topAnchor.constraint(equalTo: topAnchor),
+            tableView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 }
@@ -95,13 +65,12 @@ private extension DetailView {
 
 extension DetailView {
     
-    public func setupView(repository: Repository) {
-        self.repositoryInfoView.updateView(with: RepositoryInfoViewConfiguration(repoTitle: repository.name ?? "", repoDescription: repository.description ?? "", stars: repository.stargazersCount ?? 0, forks: repository.forksCount ?? 0))
-        
-        self.ownerView.updateView(with: OwnerViewConfiguration(ownerTitle: "Owner", ownerName: repository.owner?.login ?? "", ownerBio: repository.owner?.type ?? "", ownerImage: ownerImage ?? UIImage()))
+    public func configureTableViewDelegate(delegate: UITableViewDelegate, dataSource: UITableViewDataSource) {
+        tableView.delegate = delegate
+        tableView.dataSource = dataSource
     }
     
-    public func setupViewImage(ownerImage: UIImage) {
-        self.ownerView.updateImage(image: ownerImage)
+    public func reloadView() {
+        tableView.reloadData()
     }
 }

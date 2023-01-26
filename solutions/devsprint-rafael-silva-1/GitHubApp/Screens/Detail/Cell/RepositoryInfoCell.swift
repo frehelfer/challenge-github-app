@@ -14,7 +14,7 @@ struct RepositoryInfoViewConfiguration {
     let forks: Int
 }
 
-class RepositoryInfoView: UIView {
+class RepositoryInfoCell: UITableViewCell {
     
     private lazy var repoTitle: UILabel = {
         let label = UILabel()
@@ -43,8 +43,10 @@ class RepositoryInfoView: UIView {
     
     // MARK: - Init
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    static let cellIdentifier = "RepositoryInfoCell"
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
     
@@ -54,7 +56,7 @@ class RepositoryInfoView: UIView {
     
 }
 
-private extension RepositoryInfoView {
+private extension RepositoryInfoCell {
     
     func setupViews() {
         
@@ -63,9 +65,9 @@ private extension RepositoryInfoView {
     }
     
     func configureSubviews() {
-        addSubview(repoTitle)
-        addSubview(repoDescription)
-        addSubview(starsAndForks)
+        contentView.addSubview(repoTitle)
+        contentView.addSubview(repoDescription)
+        contentView.addSubview(starsAndForks)
     }
     
     func configureSubviewsConstraints() {
@@ -87,7 +89,7 @@ private extension RepositoryInfoView {
     }
 }
 
-extension RepositoryInfoView {
+extension RepositoryInfoCell {
     
     public func updateView(with configuration: RepositoryInfoViewConfiguration) {
         self.repoTitle.text = configuration.repoTitle

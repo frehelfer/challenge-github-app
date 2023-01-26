@@ -10,8 +10,8 @@ import UIKit
 final class ListViewController: UIViewController {
     
     private var repositories: [Repository] = []
-    private var searchText = ""
      
+    private let startView = StartView()
     private let emptyView = EmptyView()
     private let loadingView = LoadingView()
     private let listView = ListView()
@@ -21,8 +21,7 @@ final class ListViewController: UIViewController {
     private lazy var searchController: UISearchController = {
         let controller = UISearchController()
         controller.searchBar.placeholder = "Type a GitHub user name"
-        controller.searchResultsUpdater = self
-        controller.delegate = self
+        controller.searchBar.delegate = self
         controller.obscuresBackgroundDuringPresentation = false
         return controller
     }()
@@ -52,9 +51,9 @@ final class ListViewController: UIViewController {
     }
     
     override func loadView() {
-        view = StartView()
+        view = startView
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.barTintColor = .green
+        navigationController?.navigationBar.barTintColor = .secondarySystemBackground
         navigationItem.title = "Repositories"
         navigationItem.searchController = searchController
         navigationItem.rightBarButtonItem = settingsButton
@@ -66,20 +65,31 @@ final class ListViewController: UIViewController {
 
 // MARK: - SearchController config
 
-extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegate {
-    func updateSearchResults(for searchController: UISearchController) {
+extension ListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        if searchBar.text == "" {
+            view = startView
+        } else {
+            view = loadingView
+        }
+        
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector: #selector(reload), object: nil)
+        perform(#selector(reload), with: nil, afterDelay: 0.7)
+    }
+    
+    @objc func reload() {
         guard
             searchController.searchBar.text != "",
-            searchController.searchBar.text != searchText,
-            let text = searchController.searchBar.text
-        else { return }
-
-        self.view = loadingView
-        self.searchText = text
-
-        self.service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            let text = searchController.searchBar.text else {
+            view = startView
+            return
+        }
+        
+        service.fetchUserRepositories(userName: text) { [weak self] repositories, error in
+            
+            DispatchQueue.main.async {
                 if let repositories {
                     self?.repositories = repositories
                     self?.listView.updateView(with: repositories)
@@ -89,6 +99,7 @@ extension ListViewController: UISearchResultsUpdating, UISearchControllerDelegat
                 }
             }
         }
+        
     }
 }
 

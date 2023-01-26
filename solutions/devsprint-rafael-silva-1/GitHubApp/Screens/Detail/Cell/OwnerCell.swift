@@ -14,7 +14,7 @@ struct OwnerViewConfiguration {
     let ownerImage: UIImage
 }
 
-class OwnerView: UIView {
+class OwnerCell: UITableViewCell {
     
     private lazy var ownerTitle: UILabel = {
         let label = UILabel()
@@ -58,8 +58,10 @@ class OwnerView: UIView {
 
     // MARK: - Init
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    static let cellIdentifier = "OwnerCell"
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupViews()
     }
     
@@ -69,7 +71,7 @@ class OwnerView: UIView {
     
 }
 
-private extension OwnerView {
+private extension OwnerCell {
     
     func setupViews() {
         
@@ -78,18 +80,18 @@ private extension OwnerView {
     }
     
     func configureSubviews() {
-        addSubview(ownerTitle)
-        addSubview(ownerName)
-        addSubview(ownerBio)
-        addSubview(button)
-        addSubview(ownerImage)
+        contentView.addSubview(ownerTitle)
+        contentView.addSubview(ownerName)
+        contentView.addSubview(ownerBio)
+        contentView.addSubview(button)
+        contentView.addSubview(ownerImage)
     }
     
     func configureSubviewsConstraints() {
         NSLayoutConstraint.activate([
         
-            ownerTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             ownerTitle.topAnchor.constraint(equalTo: topAnchor, constant: 21),
+            ownerTitle.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
             ownerTitle.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -18),
             
             ownerName.leadingAnchor.constraint(equalTo: ownerTitle.leadingAnchor),
@@ -114,7 +116,7 @@ private extension OwnerView {
     }
 }
 
-extension OwnerView {
+extension OwnerCell {
     
     public func updateView(with configuration: OwnerViewConfiguration) {
         self.ownerTitle.text = configuration.ownerTitle
